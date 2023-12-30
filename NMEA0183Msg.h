@@ -114,6 +114,13 @@ class tNMEA0183Msg
 
   public:
     tNMEA0183Msg();
+
+	  // Returns the number of fragments for the complete message
+    virtual int Fragments() const { return 1; }
+
+    // Initializes the message with the specified fragment (0 based index). Returns false if index specifies an invalid fragment
+    virtual bool SetFragment(int index) { return index == 0; }
+
     // Set message from received null terminated buffer. Returns true if checksum is OK.
     bool SetMessage(const char *buf);
     // Get message as complete NMEA0183 format string to buffer.

@@ -102,7 +102,7 @@ bool tNMEA0183::GetMessage(tNMEA0183Msg &NMEA0183Msg) {
         MsgInBuf[MsgInPos]=NewByte;
         if (NewByte=='*') MsgCheckSumStartPos=MsgInPos;
         MsgInPos++;
-        if (MsgCheckSumStartPos!=SIZE_MAX and MsgCheckSumStartPos+3==MsgInPos) { // We have full checksum and so full message
+        if (MsgCheckSumStartPos!=SIZE_MAX && MsgCheckSumStartPos+3==MsgInPos) { // We have full checksum and so full message
             MsgInBuf[MsgInPos]=0; // add null termination
           if (NMEA0183Msg.SetMessage(MsgInBuf)) {
             NMEA0183Msg.SourceID=SourceID;
