@@ -41,6 +41,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
        || defined(__SAM3X8E__) \
        || defined(__linux__)||defined(__linux)||defined(linux) \
        || defined(_WIN32) \
+       || defined(ESP_PLATFORM) \
      )
 #define NO_PRINTF_DOUBLE_SUPPORT
 #endif
