@@ -1,7 +1,7 @@
 /*
 NMEA0183Messages.cpp
 
-Copyright (c) 2015-2023 Timo Lappalainen, Kave Oy, www.kave.fi
+Copyright (c) 2015-2024 Timo Lappalainen, Kave Oy, www.kave.fi
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -829,13 +829,13 @@ bool NMEA0183SetGSV(tNMEA0183Msg &NMEA0183Msg, uint32_t totalMSG, uint32_t thisM
 	return true; 
 }
 	  
-bool NMEA0183ParseGSV(const tNMEA0183Msg &NMEA0183Msg, int &totalMSG, int &thisMSG, int &SatelliteCount,
+bool NMEA0183ParseGSV_nc(const tNMEA0183Msg &NMEA0183Msg, int &totalMSG, int &thisMSG, int &SatelliteCount,
                         struct tGSV &Msg1,
                         struct tGSV &Msg2,
                         struct tGSV &Msg3,
                         struct tGSV &Msg4)
 {
-  bool result = ( NMEA0183Msg.FieldCount() >= 19);
+  bool result = ( NMEA0183Msg.FieldCount() >= 7);
 
   if(result) {
     totalMSG = atoi(NMEA0183Msg.Field(0));
@@ -977,5 +977,24 @@ bool NMEA0183SetSHR(tNMEA0183Msg& NMEA0183Msg, double GPSTime, const double Head
   if (!NMEA0183Msg.AddDoubleField(radToDeg * HeadingAccuracyRad, 1, "%.2f")) return false;
   if (!NMEA0183Msg.AddUInt32Field(GPSQualityIndicator)) return false;
   if (!NMEA0183Msg.AddUInt32Field(INSStatusFlag)) return false;
+  return true;
+}
+
+//*****************************************************************************
+// $GPMTW,11.2,C*24
+bool NMEA0183ParseMTW_nc(const tNMEA0183Msg &NMEA0183Msg, double &Watertemp)
+{
+  bool result=( NMEA0183Msg.FieldCount()>=2 );
+
+  if ( result )
+    Watertemp=atof(NMEA0183Msg.Field(0));
+
+  return result;
+}
+
+bool NMEA0183SetMTW(tNMEA0183Msg &NMEA0183Msg, double WaterTemp, const char *Src) {
+  if ( !NMEA0183Msg.Init("MTW",Src)) return false;
+  if ( !NMEA0183Msg.AddDoubleField(WaterTemp)) return false;
+  if ( !NMEA0183Msg.AddStrField("C")) return false;
   return true;
 }
